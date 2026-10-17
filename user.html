@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>ကိုဇေ မိုဘိုင်း | ဖုန်းပြင်ဆိုင်</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121d2e;
+      --panel2: #19263a;
+      --text: #f5f7fb;
+      --muted: #a9b5c8;
+      --accent: #ffbd45;
+      --accent2: #ff8c42;
+      --line: rgba(255,255,255,.10);
+      --good: #3ddc97;
+      --danger: #ff6b6b;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--text); background:
+        radial-gradient(circle at top right, rgba(35,93,145,.22), transparent 36%),
+        var(--bg);
+      font-family: system-ui, -apple-system, "Noto Sans Myanmar", "Myanmar Text", sans-serif;
+      line-height: 1.6;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .container { width: min(100% - 28px, 1060px); margin: 0 auto; }
+    header { padding: 22px 0 10px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .logo {
+      width:48px; height:48px; flex:0 0 48px; border-radius:15px;
+      display:grid; place-items:center; background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#171717; font-size:25px; box-shadow:0 8px 24px #ffad3633;
+    }
+    h1 { margin:0; font-size:clamp(20px,4vw,28px); line-height:1.25; }
+    .subtitle { color:var(--muted); font-size:13px; margin-top:5px; }
+    .top-actions { display:flex; gap:8px; align-items:center; }
+    .btn {
+      border:0; border-radius:12px; padding:10px 14px; font-weight:700;
+      transition:transform .15s, opacity .15s; display:inline-flex; justify-content:center;
+      align-items:center; gap:7px; text-decoration:none;
+    }
+    .btn:active { transform:scale(.98); }
+    .btn-primary { background:var(--accent); color:#21190b; }
+    .btn-secondary { background:var(--panel2); color:var(--text); border:1px solid var(--line); }
+    .btn-small { padding:8px 11px; font-size:13px; }
+    .hero {
+      margin-top:18px; padding:24px; border:1px solid var(--line); border-radius:24px;
+      background:linear-gradient(120deg,#1a2a40,#121d2e 72%); display:grid;
+      grid-template-columns:1.3fr .7fr; gap:20px; align-items:center; overflow:hidden;
+    }
+    .eyebrow { color:var(--accent); font-weight:800; font-size:12px; letter-spacing:.7px; }
+    .hero h2 { font-size:clamp(25px,5vw,39px); line-height:1.3; margin:8px 0 10px; }
+    .hero p { color:var(--muted); margin:0 0 18px; max-width:600px; }
+    .hero-art { display:grid; place-items:center; min-height:170px; }
+    .phone-art {
+      width:130px; height:220px; border:7px solid #34445c; border-radius:26px;
+      background:linear-gradient(145deg,#263b58,#0c1524); position:relative;
+      box-shadow:0 20px 45px #0007; transform:rotate(7deg);
+    }
+    .phone-art:before { content:""; position:absolute; width:42px; height:8px; border-radius:10px;
+      top:5px; left:calc(50% - 21px); background:#34445c; }
+    .phone-art:after { content:"⚙"; position:absolute; inset:0; display:grid; place-items:center;
+      font-size:54px; color:var(--accent); }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0 26px; }
+    .stat { padding:15px; border-radius:16px; background:var(--panel); border:1px solid var(--line); }
+    .stat strong { display:block; font-size:19px; }
+    .stat span { color:var(--muted); font-size:12px; }
+    section { margin:26px 0; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:12px; margin-bottom:13px; }
+    .section-head h2 { font-size:21px; margin:0; }
+    .section-head p { color:var(--muted); font-size:13px; margin:3px 0 0; }
+    .services { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .service {
+      border:1px solid var(--line); border-radius:17px; padding:17px 12px;
+      text-align:left; color:var(--text); background:var(--panel); min-height:128px;
+    }
+    .service:hover { border-color:#ffbd4580; }
+    .service .emoji { font-size:27px; display:block; margin-bottom:8px; }
+    .service strong { display:block; font-size:14px; }
+    .service small { color:var(--muted); font-size:12px; }
+    .two-col { display:grid; grid-template-columns:1.1fr .9fr; gap:16px; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:19px; min-width:0; }
+    .card h3 { margin:0 0 7px; font-size:18px; }
+    .muted { color:var(--muted); font-size:13px; }
+    .repair-demo { margin-top:15px; padding:14px; border-radius:15px; background:var(--panel2); }
+    .repair-top { display:flex; justify-content:space-between; gap:10px; align-items:center; }
+    .status { display:inline-block; padding:4px 9px; border-radius:99px; background:#3ddc9720; color:var(--good); font-size:11px; font-weight:800; }
+    .quick-actions { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:15px; }
+    .quick-actions .btn { width:100%; }
+    .info-list { display:grid; gap:12px; margin-top:15px; }
+    .info-row { display:flex; gap:11px; align-items:flex-start; }
+    .info-icon { width:36px; height:36px; display:grid; place-items:center; border-radius:11px; background:var(--panel2); flex:0 0 36px; }
+    .info-row strong { display:block; font-size:14px; }
+    .info-row span { color:var(--muted); font-size:12px; }
+    .notice { border:1px solid #ffbd4540; color:#ffe3a3; background:#ffbd4510; padding:12px 14px; border-radius:13px; font-size:12px; margin-top:14px; }
+    footer { padding:28px 0 95px; text-align:center; color:var(--muted); font-size:12px; }
+    .bottom-nav {
+      position:fixed; z-index:10; bottom:0; left:0; right:0; display:flex; justify-content:space-around;
+      padding:9px 8px calc(9px + env(safe-area-inset-bottom)); background:#0b1220ed;
+      border-top:1px solid var(--line); backdrop-filter:blur(15px);
+    }
+    .bottom-nav a { color:var(--muted); text-decoration:none; text-align:center; font-size:11px; min-width:55px; }
+    .bottom-nav a span { display:block; font-size:19px; }
+    .modal { display:none; position:fixed; z-index:30; inset:0; background:#0009; padding:18px; overflow:auto; }
+    .modal.open { display:grid; place-items:center; }
+    .modal-box { width:min(100%,470px); padding:22px; border:1px solid var(--line); border-radius:20px; background:#111c2d; box-shadow:0 24px 70px #0008; }
+    .modal-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:15px; }
+    .modal-head h2 { margin:0; font-size:20px; }
+    .close { background:transparent; color:var(--text); border:0; font-size:25px; padding:0 5px; }
+    .field { display:grid; gap:6px; margin:12px 0; }
+    .field label { font-size:13px; color:#dce5f3; }
+    .field input, .field textarea, .field select {
+      width:100%; border:1px solid #34445c; border-radius:11px; padding:11px 12px;
+      color:var(--text); background:#0c1524; outline:none;
+    }
+    .field input:focus, .field textarea:focus { border-color:var(--accent); }
+    .field textarea { min-height:85px; resize:vertical; }
+    .form-actions { display:flex; gap:9px; margin-top:16px; }
+    .form-actions .btn { flex:1; }
+    .message { margin-top:12px; padding:10px 12px; border-radius:10px; font-size:13px; display:none; }
+    .message.show { display:block; }
+    .message.error { background:#ff6b6b18; color:#ffb0b0; }
+    .message.success { background:#3ddc9718; color:#8df0c1; }
+    .user-email { font-size:12px; color:var(--muted); overflow-wrap:anywhere; }
+    @media (max-width:720px) {
+      .hero { grid-template-columns:1fr; padding:21px; }
+      .hero-art { display:none; }
+      .services { grid-template-columns:repeat(2,1fr); }
+      .two-col { grid-template-columns:1fr; }
+      .stats { gap:8px; }
+      .stat { padding:12px 10px; }
+      .stat strong { font-size:17px; }
+      .topbar { align-items:flex-start; }
+      .top-actions .btn { padding:8px 10px; font-size:12px; }
+    }
+    @media (max-width:380px) {
+      .brand { gap:8px; }
+      .logo { width:40px; height:40px; flex-basis:40px; }
+      .subtitle { font-size:11px; }
+      .top-actions { flex-direction:column; align-items:stretch; }
+      .stats { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- iPhone Message Sound (Tri-tone) -->
+  <audio id="notifSound" preload="auto">
+    <source src="https://www.myinstants.com/media/sounds/iphone-sms.mp3" type="audio/mpeg">
+  </audio>
+
+  <header class="container" id="home">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">🔧</div>
+        <div>
+          <h1>ကိုဇေ မိုဘိုင်း</h1>
+          <div class="subtitle">ဖုန်းပြင်ဆိုင် · ယုံကြည်စိတ်ချရသော ဝန်ဆောင်မှု</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn btn-secondary btn-small" id="accountButton" onclick="openModal('accountModal')">👤 အကောင့်ဝင်ရန်</button>
+      </div>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">PHONE REPAIR SERVICE</div>
+        <h2>သင့်ဖုန်းကို<br>စိတ်ချလက်ချ အပ်နှံလိုက်ပါ</h2>
+        <p>ဖုန်းပြင်ဆင်ခြင်း၊ Software ရေးတင်ခြင်းနှင့် စစ်ဆေးပြုပြင်ခြင်းများကို သေချာဂရုစိုက် ဆောင်ရွက်ပေးပါသည်။</p>
+        <button class="btn btn-primary" onclick="openRepairModal()">🛠️ ဖုန်းပြင်အပ်မည်</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">ဝန်ဆောင်မှုများကြည့်ရန်</button>
+      </div>
+      <div class="hero-art"><div class="phone-art"></div></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>🛠️ ပြုပြင်မှု</strong><span>စနစ်တကျ စစ်ဆေးပေးခြင်း</span></div>
+      <div class="stat"><strong>📱 Software</strong><span>ဖုန်းစနစ်ဆိုင်ရာ ဝန်ဆောင်မှု</span></div>
+      <div class="stat"><strong>🤝 ယုံကြည်မှု</strong><span>ဖောက်သည်ကို ဦးစားပေးခြင်း</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="services">
+      <div class="section-head">
+        <div><h2>ဝန်ဆောင်မှုများ</h2><p>လိုအပ်သော ဝန်ဆောင်မှုကို ရွေးချယ်နိုင်ပါသည်။</p></div>
+      </div>
+      <div class="services">
+        <button class="service" onclick="chooseService('Hardware ပြုပြင်ခြင်း')"><span class="emoji">🔩</span><strong>Hardware ပြုပြင်ခြင်း</strong><small>LCD၊ ဘက်ထရီ၊ Charging</small></button>
+        <button class="service" onclick="chooseService('Software ရေးတင်ခြင်း')"><span class="emoji">💻</span><strong>Software ရေးတင်ခြင်း</strong><small>Firmware၊ Update</small></button>
+        <button class="service" onclick="chooseService('ဖုန်းဖွင့်မရခြင်း')"><span class="emoji">🔋</span><strong>ဖုန်းဖွင့်မရခြင်း</strong><small>Power ပြဿနာ စစ်ဆေးမှု</small></button>
+        <button class="service" onclick="chooseService('အခြားပြဿနာ')"><span class="emoji">🧰</span><strong>အခြားပြဿနာ</strong><small>စစ်ဆေးပြီးမှ အကြံပြုမည်</small></button>
+      </div>
+    </section>
+
+    <section class="two-col" id="repair">
+      <div class="card">
+        <h3>🔎 ပြင်ဆင်မှုအခြေအနေ</h3>
+        <p class="muted">သင့်အကောင့်ဖြင့် ဝင်ထားပါက သင်တင်ထားသော ပြင်ဆင်မှုတောင်းဆိုချက်များကို ကြည့်နိုင်ပါသည်။</p>
+        <div id="repairList"><div class="repair-demo">
+          <div class="repair-top"><strong>နမူနာအခြေအနေ</strong><span class="status">ဥပမာ</span></div>
+          <p class="muted">ဤနေရာတွင် သင့်တောင်းဆိုချက်များကို ပြသပါမည်။</p>
+        </div></div>
+        <div class="quick-actions">
+          <button class="btn btn-primary" onclick="openRepairModal()">+ ပြင်အပ်ရန်</button>
+          <button class="btn btn-secondary" onclick="loadMyRepairs()">↻ ပြန်စစ်ရန်</button>
+        </div>
+        <div class="notice">ကိုယ်ပိုင်တောင်းဆိုချက်များကို ကြည့်ရန် အကောင့်ဝင်ထားရန် လိုအပ်ပါသည်။</div>
+      </div>
+      <div class="card" id="contact">
+        <h3>📍 ဆိုင်အချက်အလက်</h3>
+        <p class="muted">ဆိုင်၏ တည်နေရာ၊ ဖွင့်ချိန်နှင့် ဆက်သွယ်ရန် အချက်အလက်များ</p>
+        <div class="info-list">
+          <div class="info-row"><div class="info-icon">📍</div><div><strong>တည်နေရာ</strong><span>ညောင်စာရေးမြို့၊ လမ်းရှည်လမ်း၊ ရှမ်းကျောင်းအနီး</span></div></div>
+          <div class="info-row"><div class="info-icon">🕘</div><div><strong>ဖွင့်ချိန်</strong><span>မနက် ၇ နာရီ မှ ညနေ ၅ နာရီထိ</span></div></div>
+          <div class="info-row"><div class="info-icon">📞</div><div><strong>ဆက်သွယ်ရန်</strong><span style="color:var(--accent); font-weight:bold;">09794816825</span></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">© <span id="year"></span> ကိုဇေ မိုဘိုင်း · ဖုန်းပြင်ဆိုင် Website</footer>
+
+  <nav class="bottom-nav">
+    <a href="#home"><span>⌂</span>ပင်မ</a>
+    <a href="#services"><span>▦</span>ဝန်ဆောင်မှု</a>
+    <a href="#repair"><span>🛠</span>ပြင်ဆင်မှု</a>
+    <a href="#contact"><span>☎</span>ဆက်သွယ်ရန်</a>
+  </nav>
+
+  <div class="modal" id="repairModal" role="dialog" aria-modal="true" aria-labelledby="repairTitle">
+    <div class="modal-box">
+      <div class="modal-head"><h2 id="repairTitle">ဖုန်းပြင်အပ်ရန်</h2><button class="close" onclick="closeModal('repairModal')" aria-label="ပိတ်ရန်">×</button></div>
+      <p class="muted">တောင်းဆိုချက်တင်ရန် အချက်အလက်များကို ဖြည့်ပါ။</p>
+      <form id="repairForm">
+        <div class="field"><label for="customerName">Customer အမည်</label><input id="customerName" required placeholder="ဥပမာ - ကိုထွန်းထွန်း"></div>
+        <div class="field"><label for="customerPhone">ဆက်သွယ်ရန် ဖုန်းနံပါတ်</label><input id="customerPhone" required inputmode="tel" placeholder="09xxxxxxxxx"></div>
+        <div class="field"><label for="phoneModel">ဖုန်းအမျိုးအစား / မော်ဒယ်</label><input id="phoneModel" required placeholder="ဥပမာ - Redmi Note 12"></div>
+        <div class="field"><label for="problem">ပြဿနာအသေးစိတ်</label><textarea id="problem" required placeholder="ဖုန်းမှာ ဖြစ်နေတဲ့ပြဿနာကို ရေးပါ"></textarea></div>
+        <div id="repairMessage" class="message" role="status"></div>
+        <div class="form-actions"><button type="button" class="btn btn-secondary" onclick="closeModal('repairModal')">မလုပ်တော့ပါ</button><button type="submit" class="btn btn-primary" id="submitRepairButton">တင်သွင်းမည်</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="accountModal" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+    <div class="modal-box">
+      <div class="modal-head"><h2 id="accountTitle">အကောင့်</h2><button class="close" onclick="closeModal('accountModal')" aria-label="ပိတ်ရန်">×</button></div>
+      <p id="accountStatus" class="muted">Email နဲ့ Password ဖြင့် အကောင့်ဖွင့်ပါ သို့မဟုတ် ဝင်ပါ။</p>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field"><label for="password">Password (အနည်းဆုံး ၆ လုံး)</label><input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="Password"></div>
+      <div id="accountMessage" class="message" role="status"></div>
+      <div class="form-actions"><button class="btn btn-secondary" onclick="registerAccount()">အကောင့်ဖွင့်ရန်</button><button class="btn btn-primary" onclick="loginAccount()">ဝင်ရန်</button></div>
+      <button class="btn btn-secondary" style="width:100%;margin-top:9px" onclick="logoutAccount()">ထွက်ရန်</button>
+      <p class="user-email" id="signedInEmail"></p>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuU16a4rVNyngdwe5VB4LOVDtT7TMksyg",
+      authDomain: "ko-zay-phone-repair.firebaseapp.com",
+      databaseURL: "https://ko-zay-phone-repair-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ko-zay-phone-repair",
+      storageBucket: "ko-zay-phone-repair.firebasestorage.app",
+      messagingSenderId: "711737265745",
+      appId: "1:711737265745:android:13ad1feb271af596b3f270"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+
+    let currentUser = null;
+    let initialLoadDone = false; // Page စဖွင့်ချင်း အသံမမြည်စေရန်
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("open");
+      if (id === "accountModal") showAccountStatus();
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+    }
+
+    function showMessage(id, message, type) {
+      const el = document.getElementById(id);
+      el.textContent = message;
+      el.className = "message show " + (type || "error");
+    }
+    function clearMessage(id) {
+      const el = document.getElementById(id);
+      el.textContent = "";
+      el.className = "message";
+    }
+    function friendlyAuthError(error) {
+      const codes = {
+        "auth/email-already-in-use": "ဒီ Email နဲ့ အကောင့်ဖွင့်ပြီးသားပါ။",
+        "auth/invalid-email": "Email ပုံစံမှန်မမှန် စစ်ဆေးပါ။",
+        "auth/weak-password": "Password ကို အနည်းဆုံး ၆ လုံး ထည့်ပါ။",
+        "auth/user-not-found": "ဒီ Email အတွက် အကောင့်မတွေ့ပါ။",
+        "auth/wrong-password": "Password မှားနေပါတယ်။",
+        "auth/invalid-credential": "Email သို့မဟုတ် Password မှားနေပါတယ်။",
+        "auth/too-many-requests": "ကြိုးစားမှုများလွန်းနေပါတယ်။ ခဏစောင့်ပါ။",
+        "auth/network-request-failed": "Internet ချိတ်ဆက်မှုကို စစ်ဆေးပါ။"
+      };
+      return codes[error.code] || ("လုပ်ဆောင်မှု မအောင်မြင်ပါ။ " + (error.message || error.code || ""));
+    }
+
+    async function registerAccount() {
+      clearMessage("accountMessage");
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      if (!email || password.length < 6) {
+        showMessage("accountMessage", "Email နဲ့ Password အနည်းဆုံး ၆ လုံး ထည့်ပါ။");
+        return;
+      }
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        await database.ref("users/" + userCredential.user.uid).set({
+          email: email,
+          createdAt: firebase.database.ServerValue.TIMESTAMP
+        });
+        showMessage("accountMessage", "အကောင့်ဖွင့်ပြီးပါပြီ။", "success");
+      } catch (error) {
+        showMessage("accountMessage", friendlyAuthError(error));
+      }
+    }
+
+    async function loginAccount() {
+      clearMessage("accountMessage");
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      if (!email || !password) {
+        showMessage("accountMessage", "Email နဲ့ Password ထည့်ပါ။");
+        return;
+      }
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        await database.ref("users/" + userCredential.user.uid).update({
+          email: email,
+          lastLogin: firebase.database.ServerValue.TIMESTAMP
+        });
+        showMessage("accountMessage", "Login ဝင်ပြီးပါပြီ။", "success");
+      } catch (error) {
+        showMessage("accountMessage", friendlyAuthError(error));
+      }
+    }
+
+    async function logoutAccount() {
+      try {
+        await auth.signOut();
+        showMessage("accountMessage", "အကောင့်မှ ထွက်ပြီးပါပြီ။", "success");
+      } catch (error) {
+        showMessage("accountMessage", friendlyAuthError(error));
+      }
+    }
+
+    function showAccountStatus() {
+      const status = document.getElementById("accountStatus");
+      const emailLabel = document.getElementById("signedInEmail");
+      if (currentUser) {
+        status.textContent = "အကောင့်ဝင်ထားပါသည်။";
+        emailLabel.textContent = "ဝင်ထားသောအကောင့်: " + currentUser.email;
+      } else {
+        status.textContent = "Email နဲ့ Password ဖြင့် အကောင့်ဖွင့်ပါ သို့မဟုတ် ဝင်ပါ။";
+        emailLabel.textContent = "အကောင့်မဝင်ရသေးပါ။";
+      }
+    }
+
+    auth.onAuthStateChanged(user => {
+      currentUser = user;
+      const button = document.getElementById("accountButton");
+      button.textContent = user ? "👤 အကောင့်ဝင်ထားသည်" : "👤 အကောင့်ဝင်ရန်";
+      showAccountStatus();
+      if (user) {
+        database.ref("users/" + user.uid).update({
+          email: user.email || ""
+        });
+        loadMyRepairs();
+      } else {
+        document.getElementById("repairList").innerHTML =
+          '<div class="repair-demo"><strong>အကောင့်ဝင်ထားခြင်း မရှိသေးပါ</strong><p class="muted">သင့်ပြင်ဆင်မှုတောင်းဆိုချက်များကို ကြည့်ရန် အကောင့်ဝင်ပါ။</p></div>';
+      }
+    });
+
+    function chooseService(service) {
+      document.getElementById("problem").value = "";
+      openRepairModal();
+    }
+
+    function openRepairModal() {
+      if (!currentUser) {
+        openModal("accountModal");
+        showMessage("accountMessage", "ဖုန်းပြင်အပ်ရန် အရင်အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်ဖွင့်ပါ။");
+        return;
+      }
+      openModal("repairModal");
+    }
+
+    document.getElementById("repairForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      clearMessage("repairMessage");
+      if (!currentUser) {
+        showMessage("repairMessage", "အရင်အကောင့်ဝင်ပါ။");
+        return;
+      }
+      const customerName = document.getElementById("customerName").value.trim();
+      const customerPhone = document.getElementById("customerPhone").value.trim();
+      const phoneModel = document.getElementById("phoneModel").value.trim();
+      const problem = document.getElementById("problem").value.trim();
+      
+      if (!customerName || !customerPhone || !phoneModel || !problem) {
+        showMessage("repairMessage", "အချက်အလက်အားလုံး ဖြည့်ပါ။");
+        return;
+      }
+      const submitButton = document.getElementById("submitRepairButton");
+      submitButton.disabled = true;
+      submitButton.textContent = "တင်သွင်းနေသည်...";
+      try {
+        const request = {
+          uid: currentUser.uid,
+          email: currentUser.email || "",
+          customerName,
+          customerPhone,
+          phoneModel,
+          problem,
+          status: "လက်ခံရရှိ",
+          createdAt: firebase.database.ServerValue.TIMESTAMP
+        };
+        await database.ref("repairRequests").push(request);
+        showMessage("repairMessage", "ဖုန်းပြင်အပ်မှု တင်သွင်းပြီးပါပြီ။", "success");
+        document.getElementById("repairForm").reset();
+        await loadMyRepairs();
+        setTimeout(() => closeModal("repairModal"), 1000);
+      } catch (error) {
+        let message = "တင်သွင်းလို့ မရပါ။ ";
+        if (error.code === "PERMISSION_DENIED" || /permission_denied|Permission denied/i.test(error.message || "")) {
+          message += "Realtime Database Rules ကို စစ်ပါ။";
+        } else {
+          message += error.message || "Internet သို့မဟုတ် Database ကို စစ်ပါ။";
+        }
+        showMessage("repairMessage", message);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "တင်သွင်းမည်";
+      }
+    });
+
+    async function loadMyRepairs() {
+      const list = document.getElementById("repairList");
+      if (!currentUser) {
+        list.innerHTML = '<div class="repair-demo"><strong>အကောင့်ဝင်ထားခြင်း မရှိသေးပါ</strong><p class="muted">အကောင့်ဝင်ပြီးမှ ပြင်ဆင်မှုများကို ကြည့်နိုင်ပါသည်။</p></div>';
+        return;
+      }
+      list.innerHTML = '<p class="muted">အချက်အလက်များ ဖတ်နေသည်...</p>';
+      
+      database.ref("repairRequests")
+        .orderByChild("uid")
+        .equalTo(currentUser.uid)
+        .on("value", snapshot => {
+          if (!snapshot.exists()) {
+            list.innerHTML = '<div class="repair-demo"><strong>တောင်းဆိုချက် မရှိသေးပါ</strong><p class="muted">“ပြင်အပ်ရန်” ကိုနှိပ်ပြီး စတင်တင်နိုင်ပါသည်။</p></div>';
+            return;
+          }
+          const requests = [];
+          snapshot.forEach(child => requests.push({ key: child.key, ...child.val() }));
+          requests.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+          // Check if status changed or updated by Admin to play notification sound
+          if (initialLoadDone) {
+            const sound = document.getElementById("notifSound");
+            sound.play().catch(e => console.log("Audio play blocked:", e));
+          }
+          initialLoadDone = true;
+
+          list.innerHTML = requests.map(item => {
+            const date = item.createdAt ? new Date(item.createdAt).toLocaleString("my-MM") : "ယခုလေးတင်";
+            const safe = value => String(value || "").replace(/[&<>"']/g, char => ({
+              "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+            }[char]));
+            return `<div class="repair-demo">
+              <div class="repair-top"><strong>${safe(item.phoneModel)}</strong><span class="status">${safe(item.status || "လက်ခံရရှိ")}</span></div>
+              <p class="muted">အမည်: ${safe(item.customerName)}<br>ပြဿနာ: ${safe(item.problem)}<br>ဆက်သွယ်ရန်: ${safe(item.customerPhone)}<br>တင်သွင်းချိန်: ${safe(date)}</p>
+            </div>`;
+          }).join("");
+        });
+    }
+
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("click", event => {
+        if (event.target === modal) closeModal(modal.id);
+      });
+    });
+  </script>
+</body>
+</html>
